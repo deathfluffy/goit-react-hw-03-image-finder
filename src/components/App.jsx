@@ -1,7 +1,7 @@
-import { Component } from 'react';
-import './App.css';
-import { fetchImages, PER_PAGE } from '../servicesApi/Api';
-import { Searchbar } from './Searchbar/Searchbar';
+import React, { Component } from 'react';
+import css from './App.module.css';
+import { fetchImages, PER_PAGE } from '../ServicesApi/Api';
+import { Searchbar } from './SearchBar/SearchBar';
 import  ImageGallery  from './ImageGallery/ImageGallery';
 import  Button  from './Button/Button';
 import { Loader } from './Loader/Loader';
@@ -96,7 +96,7 @@ export class App extends Component {
     const { images, loading, currentImgPerPage, error, showModal, largeImage } =
       this.state;
     return (
-      <div className="App">
+      <div className={css.App}>
         <Searchbar onSubmit={this.handleFormSubmit} />
         {images.length > 0 && !error && (
           <>
