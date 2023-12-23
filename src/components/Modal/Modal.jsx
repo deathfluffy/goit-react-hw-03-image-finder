@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import propTypes from 'prop-types';
-import './Modal.css';
+import css from './Modal.module.css';
 
 export class Modal extends Component {
   componentDidMount() {
@@ -25,8 +25,8 @@ export class Modal extends Component {
 
   render() {
     return (
-      <div className="Overlay" onClick={this.handleOverlayClick}>
-        <div className="Modal">{this.props.children}</div>
+     <div className={css.Overlay} onClick={this.handleOverlayClick}>
+        <div className={css.Modal}>{this.props.children}</div>
       </div>
     );
   }

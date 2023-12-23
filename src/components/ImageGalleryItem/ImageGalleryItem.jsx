@@ -1,11 +1,11 @@
 import propTypes from 'prop-types';
-import './ImageGalleryItem.module.css';
+import css from './ImageGalleryItem.module.css';
 
 export default function ImageGalleryItem  ({ tags, preview, largeImage, onClick })  {
   return (
-    <li className="ImageGalleryItem">
+   <li className={css.ImageGalleryItem}>
       <img
-        className="ImageGalleryItem-image"
+      className={css.ImageGalleryItemImg}
         src={preview}
         alt={tags}
         onClick={() => {

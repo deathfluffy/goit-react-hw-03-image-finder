@@ -1,9 +1,9 @@
 import propTypes from 'prop-types';
-import './Button.module.css';
+import css from './Button.module.css';
 
 export default function Button ({ onClick }) {
   return (
-    <button type="button" className="Button" onClick={onClick}>
+    <button type="button" className={css.Button} onClick={onClick}>
       Load more
     </button>
   );
