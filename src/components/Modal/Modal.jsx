@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import css from './Modal.module.css';
 
 export class Modal extends Component {
@@ -33,5 +33,5 @@ export class Modal extends Component {
 }
 
 Modal.propTypes = {
-  children: propTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };

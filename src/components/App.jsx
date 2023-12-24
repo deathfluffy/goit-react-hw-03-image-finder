@@ -30,7 +30,7 @@ componentDidUpdate(prevProps, prevState) {
       .then(response => response.json())
       .then(data => {
         if (!data.total) {
-          alert('К сожалению, по вашему запросу ничего не найдено');
+          alert('Unfortunately, your search returned no results');
           return;
         }
 
@@ -48,7 +48,7 @@ componentDidUpdate(prevProps, prevState) {
 
 handleSubmit = name => {
   if (this.state.name.toLowerCase() === name.toLowerCase()) {
-    alert(`Вы уже просматриваете ${name}`);
+    alert(`You are already viewing ${name}`);
     return;
   }
 

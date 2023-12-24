@@ -1,4 +1,4 @@
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import  ImageGalleryItem  from '../ImageGalleryItem/ImageGalleryItem';
 import css from './ImageGallery.module.css';
 
@@ -23,13 +23,13 @@ export default function ImageGallery  ({ images, onClick })  {
 };
 
 ImageGallery.propTypes = {
-  images: propTypes.arrayOf(
-    propTypes.shape({
-      id: propTypes.number.isRequired,
-      webformatURL: propTypes.string.isRequired,
-      tags: propTypes.string.isRequired,
-      largeImageURL: propTypes.string,
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string,
     })
   ).isRequired,
-  onClick: propTypes.func,
+  onClick: PropTypes.func,
 };

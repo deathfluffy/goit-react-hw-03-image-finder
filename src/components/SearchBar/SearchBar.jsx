@@ -6,24 +6,25 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export class Searchbar extends Component {
-  state = { name: '' };
-
-  handleChange = e => {
-    this.setState({ name: e.currentTarget.value.toLowerCase().trim() });
+  state = {
+    searchQuery: ``,
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    const { name } = this.state;
-    const { onSubmit } = this.props;
+  handleQueryChange = ({ currentTarget: { value } }) => {
+    this.setState({ searchQuery: value.toLowerCase() });
+  };
 
-    if (name === '') {
-      toast.error('Enter what you want to find please');
+  handleSubmit = e => {
+    const searchQuery = this.state.searchQuery.trim();
+    e.preventDefault();
+
+    if (searchQuery.trim() === '') {
+      toast.info('Please, enter search word!');
       return;
     }
 
-    onSubmit(name);
-    this.setState({ name: '' });
+    this.props.onSubmit(searchQuery);
+    this.setState({ searchQuery: '' });
   };
 
 
