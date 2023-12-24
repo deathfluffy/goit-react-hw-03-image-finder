@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import css from './App.module.css';
 import { fetchImages, PER_PAGE } from '../ServicesApi/Api';
 import { Searchbar } from './SearchBar/SearchBar';
-import  ImageGallery  from './ImageGallery/ImageGallery';
-import  Button  from './Button/Button';
+import ImageGallery from './ImageGallery/ImageGallery';
+import Button from './Button/Button';
 import { Loader } from './Loader/Loader';
-import { Modal }  from './Modal/Modal';
+import { Modal } from './Modal/Modal';
 import { toast } from 'react-toastify';
 
 export class App extends Component {
   state = {
-    query: '',
+    name: '',
     page: 1,
     images: [],
     loading: false,
@@ -20,37 +20,54 @@ export class App extends Component {
     currentImgPerPage: null,
   };
 
-  componentDidUpdate(_, prevState) {
-    const prevQuery = prevState.query;
-    const nextQuery = this.state.query;
-    if (prevQuery !== nextQuery) {
-      this.getImagesData();
-    }
+componentDidUpdate(prevProps, prevState) {
+  if (prevState.name !== this.state.name || prevState.page !== this.state.page) {
+    this.setState({ loading: true });
 
-    if (this.state.page > 2) {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth',
+    const APIKEY = '40580294-4a69e721af793c687d9c3316d'; 
+
+    fetch(`https://pixabay.com/api/?q=${this.state.name}&page=${this.state.page}&key=${APIKEY}&image_type=photo&orientation-horizontal&per_page=12`)
+      .then(response => response.json())
+      .then(data => {
+        if (!data.total) {
+          alert('К сожалению, по вашему запросу ничего не найдено');
+          return;
+        }
+
+        this.setState(prevState => ({
+          images: [...prevState.images, ...data.hits],
+          totalImages: data.total,
+        }));
+      })
+      .catch(error => console.error(error))
+      .finally(() => {
+        this.setState({ loading: false });
       });
-    }
+  }
+}
+
+handleSubmit = name => {
+  if (this.state.name.toLowerCase() === name.toLowerCase()) {
+    alert(`Вы уже просматриваете ${name}`);
+    return;
   }
 
-  handleFormSubmit = query => {
-    this.setState(() => {
-      return { query: query, page: 1, images: [] };
-    });
-  };
+  this.setState({ name: name.toLowerCase(), images: [], page: 1 });
+}
 
-  handleLoadMoreImg = () => {
-    this.getImagesData();
-  };
+onLoadMoreClick = () => {
+  this.setState(prevState => ({
+    page: prevState.page + 1,
+  }));
+}
+
 
   getImagesData = async () => {
     try {
       this.setState({ loading: true });
       const { hits, totalHits } = await fetchImages(
         this.state.page,
-        this.state.query
+        this.state.name
       );
       if (totalHits === 0) {
         toast.error('Images not found ...');
@@ -91,13 +108,11 @@ export class App extends Component {
       this.toggleModal();
     });
   };
-
   render() {
-    const { images, loading, currentImgPerPage, error, showModal, largeImage } =
-      this.state;
+    const { images, loading, currentImgPerPage, error, showModal, largeImage } = this.state;
     return (
       <div className={css.App}>
-        <Searchbar onSubmit={this.handleFormSubmit} />
+        <Searchbar onSubmit={this.handleSubmit} />
         {images.length > 0 && !error && (
           <>
             <ImageGallery images={images} onClick={this.openModal} />
@@ -112,8 +127,8 @@ export class App extends Component {
           </Modal>
         )}
         {currentImgPerPage === PER_PAGE && !loading && (
-          <Button onClick={this.handleLoadMoreImg} />
-        )}
+          <Button onClick={this.onLoadMoreClick} />
+          )}
         {loading && <Loader />}
       </div>
     );
