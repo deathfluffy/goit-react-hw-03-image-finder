@@ -1,34 +1,36 @@
 import { Component } from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import css from './SearchBar.module.css';
 import { ReactComponent as SearchIcon } from '../../icon/search.svg';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export class Searchbar extends Component {
-  state = { query: '' };
-
-  handleChange = e => {
-    this.setState({ query: e.currentTarget.value.toLowerCase().trim() });
+  state = {
+    searchQuery: ``,
   };
 
-  handleSubmit = event => {
-    event.preventDefault();
-    const { query } = this.state;
-    const { onSubmit } = this.props;
+  handleQueryChange = ({ currentTarget: { value } }) => {
+    this.setState({ searchQuery: value.toLowerCase() });
+  };
 
-    if (query === '') {
-      toast.error('Enter what you want to find please');
+  handleSubmit = e => {
+    const searchQuery = this.state.searchQuery.trim();
+    e.preventDefault();
+
+    if (searchQuery.trim() === '') {
+      toast.info('Please, enter search word!');
       return;
     }
 
-    onSubmit(query);
-    this.setState({ query: '' });
+    this.props.onSubmit(searchQuery);
+    this.setState({ searchQuery: '' });
   };
+
 
   render() {
     return (
-    <header className={css.Searchbar}>
+      <header className={css.Searchbar}>
         <form
           className={css.SearchForm}
           onSubmit={this.handleSubmit}
@@ -45,7 +47,7 @@ export class Searchbar extends Component {
             autoFocus
             placeholder="Search images and photos"
             onChange={this.handleChange}
-            value={this.state.query}
+            value={this.state.name}
           />
         </form>
       </header>
@@ -54,5 +56,5 @@ export class Searchbar extends Component {
 }
 
 Searchbar.propTypes = {
-  onSubmit: propTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };

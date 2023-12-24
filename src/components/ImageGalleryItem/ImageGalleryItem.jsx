@@ -1,4 +1,4 @@
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import css from './ImageGalleryItem.module.css';
 
 export default function ImageGalleryItem  ({ tags, preview, largeImage, onClick })  {
@@ -17,8 +17,8 @@ export default function ImageGalleryItem  ({ tags, preview, largeImage, onClick 
 };
 
 ImageGalleryItem.propTypes = {
-  largeImage: propTypes.string.isRequired,
-  tags: propTypes.string.isRequired,
-  preview: propTypes.string.isRequired,
-  onClick: propTypes.func,
+  largeImage: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  preview: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
