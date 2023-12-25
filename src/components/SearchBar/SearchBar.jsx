@@ -3,22 +3,38 @@ import PropTypes from 'prop-types';
 import css from './SearchBar.module.css';
 import { ReactComponent as SearchIcon } from '../../icon/search.svg';
 import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 export default class SearchBar extends Component {
   state = {
     inputValue: '',
+    query: '',
   };
 
   handleChange = event => {
     this.setState({ inputValue: event.target.value });
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const searchName = this.state.inputValue.trim();
-    this.props.onSubmit(searchName);
-    this.setState({ inputValue: '' }); 
-  };
+handleSubmit = e => {
+  e.preventDefault();
+  const query = this.state.inputValue.trim();
+  
+  if (this.state.query.toLowerCase() === query.toLowerCase()) {
+    toast.info(`You're already viewing images for ${query}!`, {
+      position: toast.POSITION.TOP_RIGHT,
+    });
+    return;
+  }
+
+  this.setState({
+    query,
+    inputValue: '', 
+  });
+
+  this.props.onSubmit(query);
+};
+
+
 
   render() {
     return (
