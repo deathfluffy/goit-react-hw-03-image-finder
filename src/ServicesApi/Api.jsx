@@ -1,10 +1,24 @@
-export const PER_PAGE = 12;
 
-export async function fetchImages(page, name) {
-  const API_KEY = '40580294-4a69e721af793c687d9c3316d';
-  const BASE_URL = `https://pixabay.com/api/?q=${name}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=${PER_PAGE}`;
-  const response = await fetch(BASE_URL);
-  return response.ok
-    ? response.json()
-    : Promise.reject(new Error('Something went wrong, please try again'));
-}
+import axios from 'axios';
+
+
+axios.defaults.baseURL = 'https://pixabay.com/api/';
+
+
+const API_KEY = '40580294-4a69e721af793c687d9c3316d';
+
+export const perPage = 12;
+
+
+export const getImages = async (query, page) => {
+  const response = await axios.get(
+    `?key=${API_KEY}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`
+  );
+  return response.data;
+};
+
+
+export const normalizedImages = imagesArray =>
+  imagesArray.map(({ id, tags, webformatURL, largeImageURL }) => {
+    return { id, tags, webformatURL, largeImageURL };
+  });
